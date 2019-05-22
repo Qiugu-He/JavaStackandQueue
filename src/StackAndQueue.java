@@ -6,11 +6,14 @@ public class StackAndQueue {
 		Queue q = new Queue();
 		Stack s = new Stack();
 		
-		System.out.println("Please enter an string: (q for quite)");
+		System.out.println("Please enter an string: ");
 		Scanner scan = new Scanner(System.in);
 		while(scan.hasNextLine()) {
-			String input = scan.nextLine();
-			if(input.equals("q")) {
+			String input = scan.nextLine().replace("\n","");
+			input = input.replaceAll( "[^a-zA-Z0-9 ]" , "" );
+			input = input.replaceAll( "\\s+" , "" );
+			
+			if(input.equals("")) {
 				break;
 			}
 			char []charArray = input.toCharArray();
@@ -20,30 +23,35 @@ public class StackAndQueue {
 				q.enqueue(charArray[i]);
 			}
 			
-		/*	System.out.println(s.toString());
+			/*System.out.println(s.toString());
 			System.out.println(q.toString());*/
 			
 			Boolean check = false;
 			while(!s.isEmpty())
 			{	
-				if(s.pop() != q.dequeue())
+				if(Character.toLowerCase(s.pop()) != Character.toLowerCase(q.dequeue()))
 				{	
 					check = true;
+					System.out.println("The String is not palindrome.");
+					reset(s, q);
 					break;
 				}
 			}
-			if(check) {
-				System.out.println("The String is not palindrome.");
-			}else {
+			if(!check) {
 				System.out.println("The String is palindrome.");
 			}
-			System.out.println("\nPlease enter an string: (q for quite)");
+			System.out.println("\nPlease enter an string: ");
 			scan = new Scanner(System.in);
 			
 	  }//input
 		scan.close();
 		System.out.println("Program end normaly.");
 	}//main
+	
+	public static void reset(Stack s, Queue q){
+		s.sreset();
+		q.qreset();
+	}
 }
 
 class Node{
@@ -93,6 +101,10 @@ class Queue{
 			temp = temp.next;
 		}
 		return toReturn;
+	}
+	public void qreset()
+	{
+		front = tail = null;
 	}
 	
 }
@@ -144,5 +156,9 @@ class Stack{
 			temp = temp.next;
 		}
 		return toReturn;
+	}
+	public void sreset()
+	{	
+		top = null;
 	}
 }
